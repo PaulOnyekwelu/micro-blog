@@ -11,14 +11,16 @@ app.use(express.json());
 const posts = {};
 
 app.post("/posts", (req, res) => {
-  const id = randomBytes(3).toString("hex");
+  const id = randomBytes(5).toString("hex");
   const { title } = req.body;
-  if(!title){
-    return res.status(400).json({message: "title field is required"})
+  if (!title) {
+    return res.status(400).json({ message: "title field is required" });
   }
-  const isExist = Object.entries(posts).filter(post => post[1].title === title)
-  if(isExist.length > 0){
-    return res.status(400).json({message: "post already exist"})
+  const isExist = Object.entries(posts).filter(
+    (post) => post[1].title === title
+  );
+  if (isExist.length > 0) {
+    return res.status(400).json({ message: "post already exist" });
   }
   posts[id] = {
     id,
@@ -28,7 +30,7 @@ app.post("/posts", (req, res) => {
 });
 
 app.get("/posts", (req, res) => {
-  return res.json(posts)
-})
+  return res.json(posts);
+});
 
 module.exports = app;
