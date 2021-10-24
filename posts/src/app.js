@@ -5,8 +5,31 @@ const { randomBytes } = require("crypto");
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("welcome to post microservices...")
+app.use(express.json());
+
+// in-memory storage
+const posts = {};
+
+app.post("/posts", (req, res) => {
+  const id = randomBytes(3).toString("hex");
+  const { title } = req.body;
+  if(!title){
+    return res.status(400).json({message: "title field is required"})
+  }
+  const isExist = Object.entries(posts).filter(post => post[1].title === title)
+  console.log({isExist}, Object.entries(posts))
+  if(isExist.length > 0){
+    return res.status(400).json({message: "post already exist"})
+  }
+  posts[id] = {
+    id,
+    title,
+  };
+  return res.json(posts[id]);
+});
+
+app.get("/posts", (req, res) => {
+  return res.json(posts)
 })
 
 module.exports = app;

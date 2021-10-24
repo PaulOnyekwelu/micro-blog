@@ -1,0 +1,13 @@
+{
+  "name": "simpleblog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev-comments": "npm run dev --prefix comments",
+    "dev-posts": "npm run dev --prefix posts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
