@@ -1,11 +1,13 @@
 const express = require("express");
 const { randomBytes } = require("crypto");
+const cors = require("cors")
 
 // console.log(randomBytes, randomBytes(3).toString('hex'))
 
 const app = express();
 
 app.use(express.json());
+app.use(cors())
 
 // in-memory storage
 const posts = {};
