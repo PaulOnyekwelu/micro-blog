@@ -1,6 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { COMMENT_URL } from "./constant";
+import React from "react";
 
 // const CommentList = ({ comments }) => {
 //   const renderedComments = comments.map((comment) => {
@@ -24,17 +23,7 @@ import { COMMENT_URL } from "./constant";
 //   return <ul>{renderedComments}</ul>;
 // };
 
-const CommentList = ({ postId }) => {
-  const [comments, setComments] = useState([]);
-
-  const getComments = async () => {
-    const comments = await axios.get(`${COMMENT_URL}/posts/${postId}/comments`);
-    setComments(comments.data);
-  };
-
-  useEffect(() => {
-    getComments();
-  }, []);
+const CommentList = ({ comments }) => {
 
   return (
     <ul>
