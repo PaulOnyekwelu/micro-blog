@@ -18,8 +18,8 @@ app.post("/posts", (req, res) => {
   if (!title) {
     return res.status(400).json({ message: "title field is required" });
   }
-  const isExist = Object.entries(posts).filter(
-    (post) => post[1].title === title
+  const isExist = Object.values(posts).filter(
+    (post) => post.title === title
   );
   if (isExist.length > 0) {
     return res.status(400).json({ message: "post already exist" });

@@ -4,6 +4,7 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+app.use(cors())
 
 // in-memory storage
 const commentsByPostId = {};
@@ -23,7 +24,8 @@ app.post("/posts/:id/comments", (req, res) => {
   let comments = commentsByPostId[postId] || [];
   if (comments.length > 0) {
     const isExist = comments.filter((comment) => comment.content === content);
-    if (isExist) {
+    console.log({isExist})
+    if (isExist.length > 0) {
       return res.status(400).json({ message: "comment already exists" });
     }
   }

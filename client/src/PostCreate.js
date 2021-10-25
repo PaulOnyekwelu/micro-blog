@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { URL } from "./constant";
+import { POST_URL } from "./constant";
 
 const PostCreate = () => {
   const [title, setTitle] = useState("");
@@ -8,7 +8,7 @@ const PostCreate = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    await axios.post(`${URL}/posts`, {
+    await axios.post(`${POST_URL}/posts`, {
       title,
     });
 
