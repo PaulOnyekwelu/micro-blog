@@ -6,7 +6,6 @@ const axios = require("axios");
 // console.log(randomBytes, randomBytes(3).toString('hex'))
 
 const app = express();
-
 app.use(express.json());
 app.use(cors());
 

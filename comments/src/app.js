@@ -29,7 +29,7 @@ app.post("/posts/:id/comments", async (req, res) => {
       return res.status(400).json({ message: "comment already exists" });
     }
   }
-  comments = [...comments, { id, content }];
+  comments = [...comments, { id, content, status: "pending" }];
   commentsByPostId[postId] = comments;
 
   // dispatching commentcreated event to other microservices
@@ -39,14 +39,45 @@ app.post("/posts/:id/comments", async (req, res) => {
       id,
       content,
       postId,
+      status: "pending",
     },
   });
 
   return res.json(comments);
 });
 
-app.post("/event", (req, res) => {
+app.post("/event", async(req, res) => {
   console.log("event received: ", req.body.type);
+
+  const { type, data } = req.body;
+  
+  if (type === "CommentModerated") {
+    const { id, postId, content, status } = data;
+    console.log({data})
+    const comments = commentsByPostId[postId];
+    const newComment = comments.map((comment) => {
+      if (comment.id === id) {
+        return {
+          id,
+          content,
+          status,
+        };
+      }
+      return comment;
+    });
+    commentsByPostId[postId] = newComment;
+
+    await axios.post("http://localhost:4005/event", {
+      type: "CommentUpdated",
+      data: {
+        id,
+        postId,
+        content,
+        status
+      }
+    })
+  }
+
   return res.json({});
 });
 
