@@ -27,13 +27,17 @@ app.post("/posts", async (req, res) => {
     title,
   };
 
-  const resp = await axios.post("http://localhost:4005/event", {
-    type: "PostCreated",
-    data: {
-      id,
-      title,
-    },
-  });
+  try {
+    await axios.post("http://localhost:4005/event", {
+      type: "PostCreated",
+      data: {
+        id,
+        title,
+      },
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
 
   return res.json(posts[id]);
 });
@@ -44,7 +48,7 @@ app.get("/posts", (req, res) => {
 
 app.post("/event", (req, res) => {
   console.log("event received: ", req.body.type);
-  return res.json({})
+  return res.json({});
 });
 
 module.exports = app;
