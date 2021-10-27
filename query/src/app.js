@@ -7,13 +7,7 @@ app.use(cors());
 
 const posts = {};
 
-app.get("/posts", (req, res) => {
-  return res.json(posts);
-});
-
-app.post("/event", (req, res) => {
-  const { type, data } = req.body;
-
+const eventHandler = (type, data) => {
   if (type === "PostCreated") {
     posts[data.id] = {
       ...data,
@@ -38,10 +32,19 @@ app.post("/event", (req, res) => {
     });
     posts[postId].comments = newComments;
   }
+};
+
+app.get("/posts", (req, res) => {
+  return res.json(posts);
+});
+
+app.post("/event", (req, res) => {
+  const { type, data } = req.body;
+  eventHandler(type, data);
 
   console.log("event received: ", req.body.type);
 
   return res.json({});
 });
 
-module.exports = app;
+module.exports = { app, eventHandler };

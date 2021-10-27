@@ -6,8 +6,15 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+const events = [];
+
+app.get("/event", (req, res) => {
+  return res.json({events});
+});
+
 app.post("/event", async (req, res) => {
   const data = req.body;
+  events.push(data)
 
   console.log("event received: ", req.body.type);
   try {
