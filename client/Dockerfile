@@ -1,7 +1,11 @@
-FROM node:alpine
+# deploying react application to nginx server
+FROM nginx:alpine
 RUN addgroup app && adduser -S -G app app
-WORKDIR /app
-COPY ./package.json .
-RUN npm install
-COPY . .
-CMD [ "npm", "start" ]
+WORKDIR /usr/share/nginx/html/
+COPY ./build .
+
+# deploying react application to apache2 server
+# FROM httpd:alpine
+# RUN addgroup app && adduser -S -G app app
+# WORKDIR /usr/local/apache2/htdocs/
+# COPY ./build .
