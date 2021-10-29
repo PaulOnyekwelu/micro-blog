@@ -34,7 +34,7 @@ app.post("/posts/:id/comments", async (req, res) => {
 
   try {
     // dispatching commentcreated event to other microservices
-    await axios.post("http://localhost:4005/event", {
+    await axios.post("http://event-bus-clusterip:4005/event", {
       type: "CommentCreated",
       data: {
         id,
@@ -71,7 +71,7 @@ app.post("/event", async (req, res) => {
     commentsByPostId[postId] = newComment;
 
     try {
-      await axios.post("http://localhost:4005/event", {
+      await axios.post("http://event-bus-clusterip:4005/event", {
         type: "CommentUpdated",
         data: {
           id,
