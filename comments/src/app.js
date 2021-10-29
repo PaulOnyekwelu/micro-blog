@@ -32,25 +32,29 @@ app.post("/posts/:id/comments", async (req, res) => {
   comments = [...comments, { id, content, status: "pending" }];
   commentsByPostId[postId] = comments;
 
-  // dispatching commentcreated event to other microservices
-  await axios.post("http://localhost:4005/event", {
-    type: "CommentCreated",
-    data: {
-      id,
-      content,
-      postId,
-      status: "pending",
-    },
-  });
+  try {
+    // dispatching commentcreated event to other microservices
+    await axios.post("http://localhost:4005/event", {
+      type: "CommentCreated",
+      data: {
+        id,
+        content,
+        postId,
+        status: "pending",
+      },
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
 
   return res.json(comments);
 });
 
-app.post("/event", async(req, res) => {
+app.post("/event", async (req, res) => {
   console.log("event received: ", req.body.type);
 
   const { type, data } = req.body;
-  
+
   if (type === "CommentModerated") {
     const { id, postId, content, status } = data;
     const comments = commentsByPostId[postId];
@@ -66,15 +70,19 @@ app.post("/event", async(req, res) => {
     });
     commentsByPostId[postId] = newComment;
 
-    await axios.post("http://localhost:4005/event", {
-      type: "CommentUpdated",
-      data: {
-        id,
-        postId,
-        content,
-        status
-      }
-    })
+    try {
+      await axios.post("http://localhost:4005/event", {
+        type: "CommentUpdated",
+        data: {
+          id,
+          postId,
+          content,
+          status,
+        },
+      });
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   return res.json({});
