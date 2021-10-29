@@ -16,9 +16,6 @@ const eventHandler = (type, data) => {
   }
   if (type === "CommentCreated") {
     const { id, content, postId, status } = data;
-    if (!posts[postId]) {
-      return res.status(400).json({ message: "invalid post id" });
-    }
     posts[postId].comments.push({ id, content, status });
   }
   if (type === "CommentUpdated") {
@@ -31,6 +28,17 @@ const eventHandler = (type, data) => {
       return comment;
     });
     posts[postId].comments = newComments;
+  }
+};
+
+const initEvent = async () => {
+  try {
+    const events = await axios.get("http://event-bus-clusterip:4005/event");
+    for (let event of events.data.events) {
+      eventHandler(event.type, event.data);
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 };
 
@@ -47,4 +55,4 @@ app.post("/event", (req, res) => {
   return res.json({});
 });
 
-module.exports = { app, eventHandler };
+module.exports = { app, initEvent };
