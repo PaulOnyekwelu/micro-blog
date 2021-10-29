@@ -19,7 +19,7 @@ app.post("/event", async (req, res) => {
   console.log("event received: ", req.body.type);
   try {
     await axios.post("http://posts-clusterip:4000/event", data);
-    // await axios.post("http://localhost:4001/event", data);
+    await axios.post("http://comments-clusterip:4001/event", data);
     // await axios.post("http://localhost:4002/event", data);
     // await axios.post("http://localhost:4003/event", data);
   } catch (error) {
