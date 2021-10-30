@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { POST_URL } from "./constant";
 
 const PostCreate = () => {
   const [title, setTitle] = useState("");
