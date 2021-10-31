@@ -42,7 +42,7 @@ const initEvent = async () => {
   }
 };
 
-app.get("/posts", (req, res) => {
+app.get("/query/posts", (req, res) => {
   return res.json(posts);
 });
 
