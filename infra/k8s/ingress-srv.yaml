@@ -8,7 +8,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
-  - host: medinprint.com
+  - host: mymicroservices.com
     http:
       paths:
       - pathType: Prefix
