@@ -1,0 +1,60 @@
+apiVersion: skaffold/v2beta25
+kind: Config
+metadata:
+  name: simpleblog
+deploy:
+  kubectl:
+    manifests:
+    - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+  - image: silanka/client
+    context: client
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src:  'src/**/*.js'
+          dest: .
+  - image: silanka/comments
+    context: comments
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: '*.js'
+          dest: .
+  - image: silanka/event-bus
+    context: event-bus
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: '*.js'
+          dest: .
+  - image: silanka/moderator
+    context: moderator
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: '*.js'
+          dest: .
+  - image: silanka/posts
+    context: posts
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: '*.js'
+          dest: .
+  - image: silanka/query
+    context: query
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      manual:
+        - src: '*.js'
+          dest: .

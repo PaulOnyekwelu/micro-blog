@@ -18,7 +18,7 @@ spec:
           service:
             name: client-clusterip
             port:
-              number: 8080
+              number: 3000
       - pathType: Prefix
         path: "/posts"
         backend:
